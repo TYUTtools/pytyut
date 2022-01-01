@@ -14,6 +14,6 @@ if __name__ == "__main__":
     Pytyut.node_link = Pytyut.auto_node_chose(debug=True)
     zkg = Pytyut('学号', '教务系统的密码')
     zkg.login(debug=True)
-
+    class_schedule = zkg.get_class_schedule()
     print('喵')
 

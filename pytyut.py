@@ -10,6 +10,10 @@ import re
 
 
 class Pytyut:
+    default_headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                      'Chrome/90.0.4430.212 Safari/537.36 Edg/90.0.818.66',
+    }
     req_headers_add = {}  # 设置全局请求头（用于特殊节点的请求验证）
     node_link = None   # 设置默认节点
     login_pub_key = '''-----BEGIN PUBLIC KEY-----
@@ -42,12 +46,8 @@ class Pytyut:
         self.session = requests.Session()
         login_url = self.node_link + 'Login/CheckLogin'
         # 创建会话，获取ASP.NET_SessionId的Cookies
-        default_headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/90.0.4430.212 Safari/537.36 Edg/90.0.818.66',
-        }
-        default_headers.update(self.req_headers_add)
-        self.session.get(self.node_link, headers=default_headers)
+        self.default_headers.update(self.req_headers_add)
+        self.session.get(self.node_link, headers=self.default_headers)
         login_data = {
             'username': self.__RSA_uid(self.uid),
             'password': self.__pwd,
@@ -68,7 +68,7 @@ class Pytyut:
         if '登录成功' in login_res.text:
             print(login_res.json()['message'][:-1], end='：') if debug else ''
             home_url = self.node_link + '/Home/Default'
-            home_res = self.session.get(url=home_url, headers=default_headers).text
+            home_res = self.session.get(url=home_url, headers=self.default_headers).text
             html = home_res.replace(' ', '').replace('\n', '').replace('\t', '').replace('\r', '')
             name_pattern = '<small>Welcome,</small>([^*]*)</span><ic'
             real_name = re.search(name_pattern, html, ).group(1)
@@ -87,23 +87,19 @@ class Pytyut:
         :param debug:是否打印调试信息
         :return:登录节点的链接，如：http://jxgl1.tyut.edu.cn/
         """
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/90.0.4430.212 Safari/537.36 Edg/90.0.818.66',
-        }
-        headers.update(cls.req_headers_add)
+        cls.default_headers.update(cls.req_headers_add)
         test_url = 'http://jxgl1.tyut.edu.cn/'
         print("正在测试最快速的连接，请稍后...")if debug else ''
         try:
             print("节点1...", end='')if debug else ''
-            req = requests.get(test_url, timeout=3, headers=headers)
+            req = requests.get(test_url, timeout=3, headers=cls.default_headers)
             print(req.elapsed.microseconds/1000 + req.elapsed.seconds*100, 'ms')if debug else ''
         except:
             print('超时')if debug else ''
             print("节点2...", end='')if debug else ''
             test_url = 'http://jxgl2.tyut.edu.cn/'
             try:
-                req = requests.get(test_url, timeout=3, headers=headers)
+                req = requests.get(test_url, timeout=3, headers=cls.default_headers)
                 print(req.elapsed.microseconds/1000 + req.elapsed.seconds*100, 'ms')if debug else ''
             except:
                 print('超时')if debug else ''
@@ -147,5 +143,17 @@ class Pytyut:
         cipher_text = base64.b64encode(cipher.encrypt(uid.encode(encoding='utf-8')))
         value = cipher_text.decode('utf-8')
         return value
+
+    def get_class_schedule(self):
+        """
+        获取自己的课表信息
+        :return: 返回课表json信息
+        """
+        res = self.session.post(self.node_link + 'Tresources/A1Xskb/GetXsKb', headers=self.default_headers)
+        if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+            print('登录失效！')
+            return None
+        return res.json()
+
 
 
