@@ -45,3 +45,8 @@ zkg = Pytyut('学号', '教务系统的密码')
 zkg.login(debug=True)
 ```
 登录之后就可以使用对象里面的方法了。
+比如：
+```python
+class_schedule = zkg.get_class_schedule()
+```
+这样就能获取到课程信息的json数据了。
