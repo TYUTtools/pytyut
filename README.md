@@ -10,16 +10,16 @@
 > pip install pycryptodome
 
 ### 目前功能概况
-- [x] 教务系统的基础登录功能
-- [x] 自定义登录节点
-- [x] 自定义登录header
-- [x] 自定义登录公钥（公钥被更改时使用）
-- [x] debug模式（可选是否打印调试信息）
+- [x] 教务系统的基础登录功能 self.login()
+- [x] 自定义登录节点 Pytyut.node_link
+- [x] 自定义登录header Pytyut.req_headers_add
+- [x] 自定义登录公钥（公钥被更改时使用）Pytyut.login_pub_key
+- [x] debug模式（可选是否打印调试信息）debug=True
 - [ ] 教务系统选课
-- [x] 成绩查询
+- [x] 成绩查询 self.get_class_scores()
 - [ ] 绩点查询
 - [ ] 学生评教
-- [x] 查看课表信息
+- [x] 查看课表信息 self.get_class_schedule()
 - [ ] 查看全校课表
 - [ ] 自定义请求
 - [ ] ……
