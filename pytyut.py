@@ -2,8 +2,8 @@
 @FILE_NAME : pytyut
 -*- coding : utf-8 -*-
 @Author : Zhaokugua
-@Time : 2022/1/1 12:11
-@Version 0.1 beta
+@Time : 2022/1/1 17:13
+@Version 0.2 beta
 """
 import requests
 import re
@@ -158,5 +158,44 @@ class Pytyut:
             return None
         return res.json()
 
-
+    def get_class_scores(self):
+        """
+        获取课程成绩
+        :return: 返回课程成绩json信息
+        """
+        if not self.session:
+            print('未登录')
+            return None
+        req_data = {
+            'order': 'zxjxjhh desc,kch',
+        }
+        req_url = self.node_link + 'Tschedule/C6Cjgl/GetKccjResult'
+        res = self.session.post(req_url, headers=self.default_headers, data=req_data)
+        if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+            print('登录失效！')
+            return None
+        # 正则匹配学年学期，按照学年学期分开每一个片段
+        time_list = re.findall(r'\d{4}-\d{4}学年[\u4e00-\u9fa5]季', res.text)
+        score_dict_list = []
+        for i in range(len(time_list)):
+            if i < len(time_list) - 1:
+                html_part = res.text[res.text.find(time_list[i]): res.text.find(time_list[i + 1])]
+            else:
+                html_part = res.text[res.text.find(time_list[i]):]
+            info_list = re.findall(r'tyle="vertical-align:middle; ">([^^]*?)</td>', html_part)
+            for j in range(len(info_list) // 9):
+                score_dict = {
+                    'Kch': info_list[9 * j],
+                    'Kxh': info_list[9 * j + 1],
+                    'Kcm': info_list[9 * j + 2],
+                    'Kcm_en': info_list[9 * j + 3],
+                    'Xf': info_list[9 * j + 4],
+                    'KcSx': info_list[9 * j + 5],
+                    'KsSj': info_list[9 * j + 6],
+                    'Cj': info_list[9 * j + 7],
+                    'Failed_reason': info_list[9 * j + 8],
+                    'Xnxq': time_list[i],
+                }
+                score_dict_list.append(score_dict)
+        return score_dict_list
 
