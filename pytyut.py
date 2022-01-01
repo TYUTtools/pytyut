@@ -79,7 +79,6 @@ class Pytyut:
             print(login_res.json()['message']) if debug else ''
             return None
 
-
     @classmethod
     def auto_node_chose(cls, debug=False):
         """
@@ -185,6 +184,7 @@ class Pytyut:
             info_list = re.findall(r'tyle="vertical-align:middle; ">([^^]*?)</td>', html_part)
             for j in range(len(info_list) // 9):
                 score_dict = {
+                    'Xnxq': time_list[i],
                     'Kch': info_list[9 * j],
                     'Kxh': info_list[9 * j + 1],
                     'Kcm': info_list[9 * j + 2],
@@ -194,7 +194,6 @@ class Pytyut:
                     'KsSj': info_list[9 * j + 6],
                     'Cj': info_list[9 * j + 7],
                     'Failed_reason': info_list[9 * j + 8],
-                    'Xnxq': time_list[i],
                 }
                 score_dict_list.append(score_dict)
         return score_dict_list

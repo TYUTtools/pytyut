@@ -21,7 +21,7 @@
 - [ ] 学生评教
 - [x] 查看课表信息 self.get_class_schedule()
 - [ ] 查看全校课表
-- [ ] 自定义请求
+- [x] 自定义请求 self.session.get() self.session.post()
 - [ ] ……
 
 ### 使用方法：
