@@ -16,6 +16,7 @@
 - [x] 自定义登录公钥（公钥被更改时使用）Pytyut.login_pub_key
 - [x] debug模式（可选是否打印调试信息）debug=True
 - [ ] 教务系统选课
+- [x] 考试安排信息查询 self.get_test_info()
 - [x] 成绩查询 self.get_class_scores()
 - [ ] 绩点查询
 - [ ] 学生评教

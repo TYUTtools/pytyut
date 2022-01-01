@@ -7,6 +7,7 @@
 """
 import requests
 import re
+import json
 
 
 class Pytyut:
@@ -197,4 +198,48 @@ class Pytyut:
                 }
                 score_dict_list.append(score_dict)
         return score_dict_list
+
+    def get_test_info(self, xnxq, bydesk=False):
+        """
+        获取考试安排信息
+        byDesk=True时，xnxq可以传任意参数，不受影响。
+        :param bydesk: 使用教务系统主页的简化接口
+        :param xnxq: 学年学期，如'2020-2021-1-1'表示2020-2021学年第一学期，同理'2020-2021-2-1'为第二学期
+        :return:返回考试安排的json信息
+        """
+        if not self.session:
+            print('未登录')
+            return None
+        if bydesk:
+            req_url = self.node_link + 'Tschedule/C5KwBkks/GetKsxxByDesk'
+            data = {
+                'pagination[limit]': 15,
+                'pagination[offset]': 1,
+                'pagination[sort]': 'ksrq',
+                'pagination[order]': 'asc',
+                'pagination[conditionJson]': '{}',
+            }
+            res = self.session.post(req_url, headers=self.default_headers, data=data)
+            if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+                print('登录失效！')
+                return None
+            html_text = json.loads(res.text)["rpath"]["m_StringValue"]
+            html_text = html_text.replace('<font style="color: #ff0000">', '').replace('</font>', '')
+            param = '''<tr><td height='20%' width='10%' style="vertical-align:middle; ">([^<]*?)</td><td height='20%' width='25%' style="vertical-align:middle; ">([^<]*?)</td><td height='20%' width='37%' style="vertical-align:middle; ">([^<]*?)</td> <td height='20%' width='30%' style="vertical-align:middle; ">([^<]*?)</td></tr>'''
+            info_list = re.findall(param, html_text)
+            return info_list
+
+        req_url = self.node_link + 'Tschedule/C5KwBkks/GetKsxxByXhListPage'
+        data = {
+            'limit': 30,
+            'offset': 0,
+            'sort': 'ksrq',
+            'order': 'desc',
+            'conditionJson': '{"zxjxjhh":"' + xnxq + '"}'
+        }
+        res = self.session.post(req_url, headers=self.default_headers, data=data)
+        if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+            print('登录失效！')
+            return None
+        return res.json()
 
