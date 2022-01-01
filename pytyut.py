@@ -149,6 +149,9 @@ class Pytyut:
         获取自己的课表信息
         :return: 返回课表json信息
         """
+        if not self.session:
+            print('未登录')
+            return None
         res = self.session.post(self.node_link + 'Tresources/A1Xskb/GetXsKb', headers=self.default_headers)
         if '出错' in res.text or '教学管理服务平台(S)' in res.text:
             print('登录失效！')
