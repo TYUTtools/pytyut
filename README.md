@@ -25,7 +25,10 @@
 - [x] 自定义请求 self.session.get() self.session.post()
 - [ ] ……
 
-### 使用方法：
+### [wiki文档](https://gitee.com/jixiaob/pytyut/wikis)
+具体的使用方法，请查看我们的[wiki文档](https://gitee.com/jixiaob/pytyut/wikis)。
+
+### 快速开始：
 1. 将pytyut.py下载下来
 2. 引入Pytyut类：
 ```python
@@ -51,4 +54,3 @@ zkg.login(debug=True)
 class_schedule = zkg.get_class_schedule()
 ```
 这样就能获取到课程信息的json数据了。
-具体信息，请查看我们的[wiki文档](https://gitee.com/jixiaob/pytyut/wikis)。
