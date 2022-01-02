@@ -25,7 +25,10 @@
 - [x] 自定义请求 self.session.get() self.session.post()
 - [ ] ……
 
-### 使用方法：
+### [wiki文档](https://gitee.com/jixiaob/pytyut/wikis/%E5%BC%80%E5%A7%8B/%E7%AE%80%E4%BB%8B)
+具体的使用方法，请查看我们的[wiki文档](https://gitee.com/jixiaob/pytyut/wikis/%E5%BC%80%E5%A7%8B/%E7%AE%80%E4%BB%8B)。
+
+### 快速开始：
 1. 将pytyut.py下载下来
 2. 引入Pytyut类：
 ```python
