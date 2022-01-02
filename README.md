@@ -51,3 +51,4 @@ zkg.login(debug=True)
 class_schedule = zkg.get_class_schedule()
 ```
 这样就能获取到课程信息的json数据了。
+具体信息，请查看我们的[wiki文档](https://gitee.com/jixiaob/pytyut/wikis)。
