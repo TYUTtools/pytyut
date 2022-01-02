@@ -2,8 +2,8 @@
 @FILE_NAME : pytyut
 -*- coding : utf-8 -*-
 @Author : Zhaokugua
-@Time : 2022/1/1 17:13
-@Version 0.2 beta
+@Time : 2022/1/3 0:23
+@Version V0.3 beta
 """
 import requests
 import re
@@ -87,7 +87,6 @@ class Pytyut:
         :param debug:是否打印调试信息
         :return:登录节点的链接，如：http://jxgl1.tyut.edu.cn/
         """
-        cls.default_headers.update(cls.req_headers_add)
         test_url = 'http://jxgl1.tyut.edu.cn/'
         print("正在测试最快速的连接，请稍后...")if debug else ''
         try:
@@ -191,8 +190,8 @@ class Pytyut:
                     'Kcm': info_list[9 * j + 2],
                     'Kcm_en': info_list[9 * j + 3],
                     'Xf': info_list[9 * j + 4],
-                    'KcSx': info_list[9 * j + 5],
-                    'KsSj': info_list[9 * j + 6],
+                    'Kcsx': info_list[9 * j + 5],
+                    'Kssj': info_list[9 * j + 6],
                     'Cj': info_list[9 * j + 7],
                     'Failed_reason': info_list[9 * j + 8],
                 }
