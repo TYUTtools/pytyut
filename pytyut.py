@@ -65,6 +65,7 @@ class Pytyut:
             'Referer': self.node_link,
             'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
         }
+        headers_check_login.update(self.req_headers_add)
         login_res = self.session.post(url=login_url, data=login_data, headers=headers_check_login)
         if '登录成功' in login_res.text:
             print(login_res.json()['message'][:-1], end='：') if debug else ''
@@ -105,7 +106,7 @@ class Pytyut:
                 print("节点3...", end='')if debug else ''
                 test_url = 'https://jxgl20201105.tyutmate.cn/'
                 headers = {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36 NetType/WIFI MicroMessenger/7.0.20.1781(0x6700143B) WindowsWechat(0x63030532)',
+                    'User-Agent': 'Mozilla/5.0 (Linux; Android 11; Redmi K30 Pro Build/RKQ1.200826.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3171 MMWEBSDK/20211001 Mobile Safari/537.36 MMWEBID/6338 MicroMessenger/8.0.16.2040(0x2800105D) Process/toolsmp WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 miniProgram Edg/96.0.4664.110',
                     'Sec-Fetch-Site': 'same-site',
                     'Sec-Fetch-Mode': 'navigate',
                     'Sec-Fetch-User': '?1',
