@@ -54,3 +54,10 @@ zkg.login(debug=True)
 class_schedule = zkg.get_class_schedule()
 ```
 这样就能获取到课程信息的json数据了。
+
+
+接下来可能会填的坑：
+成绩查询的byDesk=True 通过教务系统首页查询
+全校课表获取
+教务系统选课列表
+教务系统请求选课
