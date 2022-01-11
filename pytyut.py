@@ -2,8 +2,8 @@
 @FILE_NAME : pytyut
 -*- coding : utf-8 -*-
 @Author : Zhaokugua
-@Time : 2022/1/3 0:23
-@Version V0.3 beta
+@Time : 2022/1/11 18:43
+@Version V0.4 beta
 """
 import requests
 import re
@@ -39,7 +39,7 @@ class Pytyut:
         """
         :param debug:是否打印调试信息
         登录教务系统
-        :return:成功返回真实姓名 失败返回None
+        :return: dict 成功info返回真实姓名 失败返回失败原因
         """
         if not self.node_link:
             print('未选择登录节点！') if debug else ''
@@ -75,11 +75,15 @@ class Pytyut:
             name_pattern = '<small>Welcome,</small>([^*]*)</span><ic'
             real_name = re.search(name_pattern, html, ).group(1)
             print(real_name) if debug else ''
-            return real_name
+            return {'http_code': login_res.status_code, 'msg': '登录成功', 'info': real_name}
         else:
             print('登录失败：', end='') if debug else ''
-            print(login_res.json()['message']) if debug else ''
-            return None
+            try:
+                error_info = login_res.json()['message']
+            except:
+                error_info = '页面信息Json解码失败！源代码：\n' + login_res.text if login_res.text else '无源代码'
+            print(error_info) if debug else ''
+            return {'http_code': login_res.status_code, 'msg': '登录失败', 'info': error_info}
 
     @classmethod
     def auto_node_chose(cls, debug=False):
