@@ -10,19 +10,23 @@
 > pip install pycryptodome
 
 ### 目前功能概况
-- [x] 教务系统的基础登录功能 self.login()
-- [x] 自定义登录节点 Pytyut.node_link
-- [x] 自定义登录header Pytyut.req_headers_add
-- [x] 自定义登录公钥（公钥被更改时使用）Pytyut.login_pub_key
-- [x] debug模式（可选是否打印调试信息）debug=True
+| 组件                                     | 版本       | 描述                |
+|----------------------------------------|----------|-------------------|
+| Pytyut.node_link                       | 2022/1/2 | 自定义登录节点           |
+| Pytyut.req_headers_add                 | 2022/1/2 | 自定义登录header       |
+| Pytyut.login_pub_key                   | 2022/1/2 | 自定义登录公钥（公钥被更改时使用） |
+| self.login()                           | 2022/1/2 | 教务系统的基础登录功能       |
+| self.get_test_info()                   | 2022/1/2 | 考试安排信息查询          |
+| self.get_class_scores()                | 2022/1/2 | 成绩查询              |
+| self.get_class_schedule()              | 2022/1/2 | 查看自己的课表信息         |
+| self.get_class_schedule_by_bjh()       | 2022/2/8 | 查看任意专业班级的课表       |
+| self.get_major_class_tree()            | 2022/2/8 | 获取所有学院专业班级        |
+| self.session.get() self.session.post() | 2022/1/2 | 自定义请求             |
+
+要填的坑：
 - [ ] 教务系统选课
-- [x] 考试安排信息查询 self.get_test_info()
-- [x] 成绩查询 self.get_class_scores()
 - [ ] 绩点查询
 - [ ] 学生评教
-- [x] 查看课表信息 self.get_class_schedule()
-- [ ] 查看全校课表
-- [x] 自定义请求 self.session.get() self.session.post()
 - [ ] ……
 
 ### [wiki文档](https://gitee.com/jixiaob/pytyut/wikis/%E5%BC%80%E5%A7%8B/%E7%AE%80%E4%BB%8B)
@@ -56,8 +60,3 @@ class_schedule = zkg.get_class_schedule()
 这样就能获取到课程信息的json数据了。
 
 
-接下来可能会填的坑：
-- [ ] 成绩查询的byDesk=True 通过教务系统首页查询
-- [ ] 全校课表获取
-- [ ] 教务系统选课列表
-- [ ] 教务系统请求选课

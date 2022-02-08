@@ -3,7 +3,7 @@
 -*- coding : utf-8 -*-
 @Author : Zhaokugua
 @Time : 2022/1/11 18:43
-@Version V0.4 beta
+@Version V0.5 beta
 """
 import requests
 import re
@@ -242,6 +242,51 @@ class Pytyut:
             'conditionJson': '{"zxjxjhh":"' + xnxq + '"}'
         }
         res = self.session.post(req_url, headers=self.default_headers, data=data)
+        if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+            print('登录失效！')
+            return None
+        return res.json()
+
+    def get_major_class_tree(self, xnxq):
+        """
+        获取历届学院专业班级树的Json信息
+        :param xnxq: 学年学期
+        :return: list 返回历届学院专业班级树的json信息
+        """
+        if not self.session:
+            print('未登录')
+            return None
+        data = {
+            'zxjxjhh': xnxq,
+        }
+        req_url = self.node_link + 'Tschedule/Zhcx/GetNjxszyTreeByrwbjJson'
+        res = self.session.post(req_url, data=data,headers=self.default_headers)
+        if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+            print('登录失效！')
+            return None
+        return res.json()
+
+    def get_class_schedule_by_bjh(self, xnxq, bjh):
+        """
+        获取历届学院专业班级树的Json信息
+        :param bjh:班级号，专业班级简称
+        :param xnxq: 学年学期
+        :return: dict 返回历届学院专业班级树的json信息
+        """
+        if not self.session:
+            print('未登录')
+            return None
+        class_data = {
+            'zxjxjhh': xnxq,
+            'bjh': bjh,
+        }
+        data = {
+            'pagination[conditionJson]': str(class_data),
+            'pagination[sort]': 'xsh,kch',
+            'pagination[order]': 'asc',
+        }
+        req_url = self.node_link + 'Tschedule/Zhcx/GetSjjsSjddByBjh'
+        res = self.session.post(req_url, data=data,headers=self.default_headers)
         if '出错' in res.text or '教学管理服务平台(S)' in res.text:
             print('登录失效！')
             return None
