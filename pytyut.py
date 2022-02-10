@@ -292,3 +292,28 @@ class Pytyut:
             return None
         return res.json()
 
+    def get_my_info(self):
+        """
+        获取自己的Json信息
+        :return: dict 返回自己的json信息，头像采用二进制字节串存储。
+        """
+        if not self.session:
+            print('未登录')
+            return None
+        req_url = self.node_link + 'Home/StudentResult'
+        res = self.session.get(req_url, headers=self.default_headers)
+        if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+            print('登录失效！')
+            return None
+        avatar = self.session.get(self.node_link + 'Tresources/AXsgj/ZpResultXs', headers=self.default_headers).content
+        param = '<div class="profile-info-name">([^^]*?)</div>[^^]*?<[^^]*?>(.*)</[^^]*?>'
+        result = re.findall(param, res.text)
+        # 列表生成法，可能会慢一些
+        result_list = [(name.replace('：', '').replace('\n', '').replace(' ', '').replace('\r', ''), value) for name, value in result]
+        result_dict = dict(result_list)
+        # 字符串替换法，会导致日期和英文姓名中的空格消失
+        # result_dict = eval(str(dict(result)).replace('：', '').replace(r'\n', '').replace(' ', '').replace(r'\r', ''))
+        result_dict['avatar'] = avatar
+        print('喵')
+        return result_dict
+
