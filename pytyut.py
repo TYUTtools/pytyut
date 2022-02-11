@@ -2,8 +2,8 @@
 @FILE_NAME : pytyut
 -*- coding : utf-8 -*-
 @Author : Zhaokugua
-@Time : 2022/1/11 18:43
-@Version V0.5 beta
+@Time : 2022/2/11 16:08
+@Version V0.6 beta
 """
 import requests
 import re
