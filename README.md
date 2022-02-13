@@ -22,6 +22,8 @@
 | self.get_class_schedule_by_bjh()       | 2022/2/8  | 查看任意专业班级的课表       |
 | self.get_major_class_tree()            | 2022/2/8  | 获取所有学院专业班级        |
 | self.get_my_info()                     | 2022/2/10 | 查看个人信息            |
+| self.get_xq_page_list()                | 2022/2/13 | 获取选课科目列表          |
+| self.get_xk_kc_list()                  | 2022/2/13 | 获取科目中可选课程列表       |
 | self.session.get() self.session.post() | 2022/1/2  | 自定义请求             |
 
 要填的坑：
