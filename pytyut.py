@@ -317,3 +317,67 @@ class Pytyut:
         print('喵')
         return result_dict
 
+    def get_xq_page_list(self, xnxq):
+        """
+        获取该学期选课列表
+        如果没有可以选的课total就是0
+        :param xnxq: 学年学期
+        :return:dict 返回可以进行选课的科目列表（不是详情）
+        """
+        if not self.session:
+            print('未登录')
+            return None
+        req_url = self.node_link + 'Tschedule/C4Xkgl/GetXkPageListJson'
+        conditionJson = {
+            "zxjxjhh": xnxq,
+        }
+        data = {
+            'limit': 30,
+            'offset': 0,
+            'sort': 'xh',
+            'order': 'asc',
+            'conditionJson': str(conditionJson).replace(r'\'', '').replace('+', '')
+        }
+        res = self.session.post(req_url, data=data, headers=self.default_headers)
+        if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+            print('登录失效！')
+            return None
+        return res.json()
+
+    def get_xk_kc_list(self, xnxq, pid):
+        """
+        获取选课课程列表
+        :param xnxq: 学年学期
+        :param pid:  选课列表中的pid
+        :return: list 返回
+        """
+        if not self.session:
+            print('未登录')
+            return None
+        conditionJson = {
+            'zxjxjhh': xnxq,
+            'kch': '',
+            'pid': pid,
+        }
+        data = {
+            'limit': 500,
+            'offset': 0,
+            'sort': 'kch,kxh',
+            'order': 'asc',
+            'conditionJson': str(conditionJson).replace('\\', '').replace('+', '')
+        }
+        # 这个接口是有教学任务的课（比如体育课）
+        req_url = self.node_link + 'Tschedule/C4Xkgl/GetXkkcListByXh'
+        res = self.session.post(req_url, data=data, headers=self.default_headers)
+        if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+            print('登录失效！')
+            return None
+        json_info = res.json()
+        # 判断有没有用错接口
+        if json_info['total'] == 0:
+            # 这个接口是没有教学任务的课（比如学习通上的选修课）
+            url2 = self.node_link + 'Tschedule/C4Xkgl/GetXkkcListWithoutJxrwByXh'
+            res2 = self.session.post(url=url2, data=data, headers=self.default_headers)
+            return res2.json()
+        return res.json()
+
