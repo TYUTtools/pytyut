@@ -24,10 +24,12 @@
 | self.get_my_info()                     | 2022/2/10 | 查看个人信息            |
 | self.get_xq_page_list()                | 2022/2/13 | 获取选课科目列表          |
 | self.get_xk_kc_list()                  | 2022/2/13 | 获取科目中可选课程列表       |
+| self.get_chosen_course_list()          | 2022/2/23 | 获取已选择的课程列表        |
+| self.choose_course()                   | 2022/2/23 | 提交选课请求表单          |
+| self.remove_course()                   | 2022/2/23 | 提交退课请求表单          |
 | self.session.get() self.session.post() | 2022/1/2  | 自定义请求             |
 
 要填的坑：
-- [ ] 教务系统选课
 - [ ] 绩点查询
 - [ ] 学生评教
 - [ ] ……

@@ -2,8 +2,8 @@
 @FILE_NAME : pytyut
 -*- coding : utf-8 -*-
 @Author : Zhaokugua
-@Time : 2022/2/11 16:08
-@Version V0.6 beta
+@Time : 2022/2/23 0:40
+@Version V0.7 beta
 """
 import requests
 import re
@@ -73,9 +73,9 @@ class Pytyut:
             home_res = self.session.get(url=home_url, headers=self.default_headers).text
             html = home_res.replace(' ', '').replace('\n', '').replace('\t', '').replace('\r', '')
             name_pattern = '<small>Welcome,</small>([^*]*)</span><ic'
-            real_name = re.search(name_pattern, html, ).group(1)
-            print(real_name) if debug else ''
-            return {'http_code': login_res.status_code, 'msg': '登录成功', 'info': real_name}
+            self.real_name = re.search(name_pattern, html, ).group(1)
+            print(self.real_name) if debug else ''
+            return {'http_code': login_res.status_code, 'msg': '登录成功', 'info': self.real_name}
         else:
             print('登录失败：', end='') if debug else ''
             try:
@@ -348,7 +348,7 @@ class Pytyut:
         """
         获取选课课程列表
         :param xnxq: 学年学期
-        :param pid:  选课列表中的pid
+        :param pid:  选课列表中的Id，比如0e902576-56cb-4e4f-a15a-3dce0b10a0b7（实际上是pid）
         :return: list 返回
         """
         if not self.session:
@@ -381,3 +381,123 @@ class Pytyut:
             return res2.json()
         return res.json()
 
+    def get_chosen_course_list(self):
+        """
+        获取已选择的课程列表
+        如果没有已经选的课total就是0
+        :param xnxq: 学年学期
+        :return:dict 返回已经选课的科目列表（不是详情）
+        """
+        if not self.session:
+            print('未登录')
+            return None
+        req_url = self.node_link + 'Tschedule/C4Xkgl/GetYxkcListByXhAndZxjxjhh'
+        conditionJson = '{"kch":"","nopid":"zk"}'
+        data = {
+            'limit': 30,
+            'offset': 0,
+            'sort': 'kch,kxh',
+            'order': 'asc',
+            'conditionJson': str(conditionJson).replace(r'\'', '').replace('+', '')
+        }
+        res = self.session.post(req_url, data=data, headers=self.default_headers)
+        if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+            print('登录失效！')
+            return None
+        return res.json()
+
+    def choose_course(self, json_info):
+        """
+        选课
+        :param json_info: 课程的json信息，如下所示：（注意，里面的数据一定不能传错，否则可能能选上课但是选的课的数据不对）
+        class_json_info = {
+            'xsxkList[0][Kch]': 'A0000111',                                  # 课程号
+            'xsxkList[0][Kcm]': '中国近代人物研究',                             # 课程名
+            'xsxkList[0][Kxh]': '01',                                        # 课序号
+            'xsxkList[0][Pid]': '0e902576-56cb-4e4f-a15a-3dce0b10a0b7',      # 课程的pid
+            'xsxkList[0][Bkskrl]': 6666,                                     # 课程总共人数，必须转换为整数
+            'xsxkList[0][Xf]': '1',                                          # 学分
+        }
+        :return:dict 返回操作成功的json数据
+        """
+        if not self.session:
+            print('未登录')
+            return None
+        headers_adds = {
+            'Accept': 'application / json, text / javascript, * / *; q = 0.01',
+            'X-Requested-With': 'XMLHttpRequest',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                          'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36 Edg/91.0.864.48',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'Origin': self.node_link,
+            'Referer': self.node_link,
+            'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        }
+        self.default_headers.update(headers_adds)
+        self.default_headers.update(self.req_headers_add)
+        req_url = self.node_link + 'Tschedule/C4Xkgl/XsxkSaveForm'
+        data = json_info
+        data['logModel[Rolename]'] = ''
+        data['logModel[Menuname]'] = '学生选课'
+        data['isjwc'] = 'false'
+        data['encryptedUsername'] = self.__RSA_uid(self.uid)
+        # 访问一个伪装URL获取Set-Cookie
+        url_text = self.node_link + 'Tschedule/C4Xkgl/XkXsxkIndex?yhm=R3m18OaKO5IALl6PvzDPz6qFtj8pRuCcSydIgHmMN2Ios2c5yfv/d2Aup8pgksJXWQZE/L8wbkZ9vrOSTFdX8jr5Jz4ewiSmYICXNSWViR/vPCgx8bHgcYY+VR4JKT5siATlDPehxIhI25pvgb36g0rba4/3wQQ4nKYUYpVR0+4=&mm=c237053a74zyc431a8a9a6a46748'
+        res_test = self.session.get(url=url_text, headers=self.default_headers).text
+        text = res_test.replace(' ', '').replace('\n', '').replace('\t', '').replace('\r', '')
+        name_pattern = '<inputname="__RequestVerificationToken"type="hidden"value="([^*]*)"/>'
+        data['__RequestVerificationToken'] = re.search(name_pattern, text, ).group(1)
+        res = self.session.post(req_url, data=data, headers=self.default_headers)
+        if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+            print('登录失效！')
+            return None
+        return res.json()
+
+    def remove_course(self, json_info, course_Id):
+        """
+        退课
+        :param json_info: 课程的json信息，如下所示：（注意，里面的数据一定不能传错，否则可能能选上课但是选的课的数据不对）
+        class_json_info = {
+            'xsxkList[0][Kch]': 'A0000111',                                  # 课程号
+            'xsxkList[0][Kcm]': '中国近代人物研究',                             # 课程名
+            'xsxkList[0][Kxh]': '01',                                        # 课序号
+            'xsxkList[0][Pid]': '0e902576-56cb-4e4f-a15a-3dce0b10a0b7',      # 课程的pid
+            'xsxkList[0][Bkskrl]': 6666,                                     # 课程总共人数，必须转换为整数
+            'xsxkList[0][Xf]': '1',                                          # 学分
+        }
+        :param course_Id: 在self.get_chosen_course_list()方法返回的数据里面获取到的Id，注意不是pid，要区分
+        :return:dict 返回退选成功的json数据
+        """
+        if not self.session:
+            print('未登录')
+            return None
+        headers_adds = {
+            'Accept': 'application / json, text / javascript, * / *; q = 0.01',
+            'X-Requested-With': 'XMLHttpRequest',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+                          'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36 Edg/91.0.864.48',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'Origin': self.node_link,
+            'Referer': self.node_link,
+            'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
+        }
+        self.default_headers.update(headers_adds)
+        self.default_headers.update(self.req_headers_add)
+        req_url = self.node_link + 'Tschedule/C4Xkgl/XsxkRemoveForm'
+        data = json_info
+        data['xsxkList[0][Id]'] = course_Id
+        data['xsxkList[0][Xh]'] = self.uid
+        data['xsxkList[0][Xm]'] = self.real_name
+        data['isjwc'] = 'false'
+        data['encryptedUsername'] = self.__RSA_uid(self.uid)
+        # 访问一个伪装URL获取Set-Cookie
+        url_text = self.node_link + 'Tschedule/C4Xkgl/XkXsxkIndex?yhm=R3m18OaKO5IALl6PvzDPz6qFtj8pRuCcSydIgHmMN2Ios2c5yfv/d2Aup8pgksJXWQZE/L8wbkZ9vrOSTFdX8jr5Jz4ewiSmYICXNSWViR/vPCgx8bHgcYY+VR4JKT5siATlDPehxIhI25pvgb36g0rba4/3wQQ4nKYUYpVR0+4=&mm=c237053a74zyc431a8a9a6a46748'
+        res_test = self.session.get(url=url_text, headers=self.default_headers).text
+        text = res_test.replace(' ', '').replace('\n', '').replace('\t', '').replace('\r', '')
+        name_pattern = '<inputname="__RequestVerificationToken"type="hidden"value="([^*]*)"/>'
+        data['__RequestVerificationToken'] = re.search(name_pattern, text, ).group(1)
+        res = self.session.post(req_url, data=data, headers=self.default_headers)
+        if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+            print('登录失效！')
+            return None
+        return res.json()
