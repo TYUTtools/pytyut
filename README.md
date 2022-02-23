@@ -5,7 +5,7 @@
 
 现在已经有很多基于此开发的实用工具！
 
-[太理全校课程表爬取<br>https://gitee.com/jixiaob/tyut_class_choose](https://gitee.com/jixiaob/TyutClassScheduleCrawler)
+[太理全校课程表爬取<br>https://gitee.com/jixiaob/TyutClassScheduleCrawler](https://gitee.com/jixiaob/TyutClassScheduleCrawler)
 
 [太理教务系统选课脚本<br>https://gitee.com/jixiaob/tyut_class_choose](https://gitee.com/jixiaob/tyut_class_choose)
 
