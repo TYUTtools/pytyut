@@ -317,7 +317,15 @@ class Pytyut:
         print('喵')
         return result_dict
 
-    def get_xq_page_list(self, xnxq):
+    def get_now_xnxq(self):
+        # 自动获取当前的学年学期
+        # 采用选课的接口，可能对于其他页面不太准确，谨慎使用
+        # 返回'2021-2022-2-1'之类的字符串
+        html_txt = self.session.get(self.node_link + f'Tschedule/C4Xkgl/XkXsxkIndex', headers=self.default_headers).text
+        result = re.findall('<option selected="selected" value="([^^]*?)">([^^]*?)</option>', html_txt)[0][0]
+        return result
+
+    def get_xq_page_list(self, xnxq='auto'):
         """
         获取该学期选课列表
         如果没有可以选的课total就是0
@@ -328,6 +336,7 @@ class Pytyut:
             print('未登录')
             return None
         req_url = self.node_link + 'Tschedule/C4Xkgl/GetXkPageListJson'
+        xnxq = self.get_now_xnxq() if xnxq == 'auto' else xnxq
         conditionJson = {
             "zxjxjhh": xnxq,
         }
@@ -344,16 +353,17 @@ class Pytyut:
             return None
         return res.json()
 
-    def get_xk_kc_list(self, xnxq, pid):
+    def get_xk_kc_list(self, pid, xnxq='auto'):
         """
         获取选课课程列表
-        :param xnxq: 学年学期
+        :param xnxq: 学年学期，不传值会自动获取
         :param pid:  选课列表中的Id，比如0e902576-56cb-4e4f-a15a-3dce0b10a0b7（实际上是pid）
         :return: list 返回
         """
         if not self.session:
             print('未登录')
             return None
+        xnxq = self.get_now_xnxq() if xnxq == 'auto' else xnxq
         conditionJson = {
             'zxjxjhh': xnxq,
             'kch': '',
@@ -385,7 +395,6 @@ class Pytyut:
         """
         获取已选择的课程列表
         如果没有已经选的课total就是0
-        :param xnxq: 学年学期
         :return:dict 返回已经选课的科目列表（不是详情）
         """
         if not self.session:
@@ -501,3 +510,5 @@ class Pytyut:
             print('登录失效！')
             return None
         return res.json()
+
+
