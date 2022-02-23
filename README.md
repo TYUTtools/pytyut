@@ -2,6 +2,9 @@
 
 ### 介绍
 使用python与太原理工相连！
+现在已经有很多基于此开发的实用工具！
+[太理全校课程表爬取](https://gitee.com/jixiaob/TyutClassScheduleCrawler)
+[太理教务系统选课脚本](https://gitee.com/jixiaob/tyut_class_choose)
 
 ### 外部包引用
 使用前请确保已经安装了以下第三方包：
