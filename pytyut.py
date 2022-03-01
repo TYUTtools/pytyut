@@ -2,7 +2,7 @@
 @FILE_NAME : pytyut
 -*- coding : utf-8 -*-
 @Author : Zhaokugua
-@Time : 2022/2/23 0:40
+@Time : 2022/3/1 20:06
 @Version V0.7 beta
 """
 import requests
@@ -106,28 +106,40 @@ class Pytyut:
                 req = requests.get(test_url, timeout=3, headers=cls.default_headers)
                 print(req.elapsed.microseconds/1000 + req.elapsed.seconds*100, 'ms')if debug else ''
             except:
-                print('超时')if debug else ''
-                print("节点3...", end='')if debug else ''
-                test_url = 'https://jxgl20201105.tyutmate.cn/'
-                headers = {
-                    'User-Agent': 'Mozilla/5.0 (Linux; Android 11; Redmi K30 Pro Build/RKQ1.200826.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3171 MMWEBSDK/20211001 Mobile Safari/537.36 MMWEBID/6338 MicroMessenger/8.0.16.2040(0x2800105D) Process/toolsmp WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 miniProgram Edg/96.0.4664.110',
-                    'Sec-Fetch-Site': 'same-site',
-                    'Sec-Fetch-Mode': 'navigate',
-                    'Sec-Fetch-User': '?1',
-                    'Sec-Fetch-Dest': 'document',
-                    'Referer': 'https://helper.tyutmate.cn/tyut/index.html?random=fuckyo',
-                }
-
+                print('超时') if debug else ''
+                print("节点3【Pytyut专属节点】...", end='') if debug else ''
+                test_url = 'http://jwc.jixiaob.cn/'
                 try:
-                    req = requests.get(test_url, timeout=10, headers=headers)
+                    req = requests.get(test_url, timeout=3, headers=cls.default_headers)
+                    print(req.elapsed.microseconds / 1000 + req.elapsed.seconds * 100, 'ms', end='') if debug else ''
                     if req.status_code != 200:
-                        print("服务器错误！请避免高峰期访问！", req.status_code)
-                        return None
-                    print(req.elapsed.microseconds / 1000 + req.elapsed.seconds * 1000, 'ms')if debug else ''
-                    cls.req_headers_add = headers
+                        print('  HTTPcode:', req.status_code, end='')
+                        raise BaseException
+                    else:
+                        print('')
                 except:
-                    print("所有节点均无响应，请检查网络！")
-                    return None
+                    print('超时')if debug else ''
+                    print("节点4...", end='')if debug else ''
+                    test_url = 'https://jxgl20201105.tyutmate.cn/'
+                    headers = {
+                        'User-Agent': 'Mozilla/5.0 (Linux; Android 11; Redmi K30 Pro Build/RKQ1.200826.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/86.0.4240.99 XWEB/3171 MMWEBSDK/20211001 Mobile Safari/537.36 MMWEBID/6338 MicroMessenger/8.0.16.2040(0x2800105D) Process/toolsmp WeChat/arm64 Weixin NetType/WIFI Language/zh_CN ABI/arm64 miniProgram Edg/96.0.4664.110',
+                        'Sec-Fetch-Site': 'same-site',
+                        'Sec-Fetch-Mode': 'navigate',
+                        'Sec-Fetch-User': '?1',
+                        'Sec-Fetch-Dest': 'document',
+                        'Referer': 'https://helper.tyutmate.cn/tyut/index.html?random=fuckyo',
+                    }
+
+                    try:
+                        req = requests.get(test_url, timeout=10, headers=headers)
+                        if req.status_code != 200:
+                            print("服务器错误！请避免高峰期访问！", req.status_code)
+                            return None
+                        print(req.elapsed.microseconds / 1000 + req.elapsed.seconds * 1000, 'ms')if debug else ''
+                        cls.req_headers_add = headers
+                    except:
+                        print("超时\n所有节点均无响应，请检查网络！")
+                        return None
 
         print("选择到节点：", test_url)if debug else ''
         return test_url
