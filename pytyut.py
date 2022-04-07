@@ -113,7 +113,7 @@ class Pytyut:
                     req = requests.get(test_url, timeout=3, headers=cls.default_headers)
                     print(req.elapsed.microseconds / 1000 + req.elapsed.seconds * 100, 'ms', end='') if debug else ''
                     if req.status_code != 200:
-                        print('  HTTPcode:', req.status_code, end='')
+                        print('  HTTPcode:', req.status_code, end='')if debug else ''
                         raise BaseException
                     else:
                         print('')
@@ -272,7 +272,7 @@ class Pytyut:
             'zxjxjhh': xnxq,
         }
         req_url = self.node_link + 'Tschedule/Zhcx/GetNjxszyTreeByrwbjJson'
-        res = self.session.post(req_url, data=data,headers=self.default_headers)
+        res = self.session.post(req_url, data=data, headers=self.default_headers)
         if '出错' in res.text or '教学管理服务平台(S)' in res.text:
             print('登录失效！')
             return None
@@ -298,7 +298,7 @@ class Pytyut:
             'pagination[order]': 'asc',
         }
         req_url = self.node_link + 'Tschedule/Zhcx/GetSjjsSjddByBjh'
-        res = self.session.post(req_url, data=data,headers=self.default_headers)
+        res = self.session.post(req_url, data=data, headers=self.default_headers)
         if '出错' in res.text or '教学管理服务平台(S)' in res.text:
             print('登录失效！')
             return None
