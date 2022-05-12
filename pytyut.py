@@ -2,8 +2,8 @@
 @FILE_NAME : pytyut
 -*- coding : utf-8 -*-
 @Author : Zhaokugua
-@Time : 2022/3/1 20:06
-@Version V0.7 beta
+@Time : 2022/5/12 23:06
+@Version V0.8 beta
 """
 import requests
 import re
@@ -523,4 +523,23 @@ class Pytyut:
             return None
         return res.json()
 
-
+    def get_total_grades_result(self):
+        """
+        获取GPA、排名、总成绩等的Json信息
+        :return: list 返回获取GPA、排名、总成绩等的Json信息的json信息
+        """
+        if not self.session:
+            print('未登录')
+            return None
+        data = {
+            'order': 'zxjxjhh desc,kch',
+        }
+        req_url = self.node_link + 'Tschedule/C6Cjgl/GetXskccjResult'
+        res = self.session.post(req_url, data=data, headers=self.default_headers)
+        if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+            print('登录失效！')
+            return None
+        key_info_list = re.findall('<div class="profile-info-name">([^<]*?)</div>', res.text)
+        value_info_list = re.findall('<span>([^<]*?)</span>', res.text)
+        result_dict = dict(zip(key_info_list, value_info_list))
+        return result_dict

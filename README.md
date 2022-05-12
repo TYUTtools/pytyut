@@ -34,10 +34,10 @@
 | self.get_chosen_course_list()          | 2022/2/23 | 获取已选择的课程列表        |
 | self.choose_course()                   | 2022/2/23 | 提交选课请求表单          |
 | self.remove_course()                   | 2022/2/23 | 提交退课请求表单          |
+| self.get_total_grades_result()         | 2022/5/12 | 总成绩 绩点 排名查询       |
 | self.session.get() self.session.post() | 2022/1/2  | 自定义请求             |
 
 要填的坑：
-- [ ] 绩点查询
 - [ ] 学生评教
 - [ ] ……
 
