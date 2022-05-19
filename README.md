@@ -64,7 +64,7 @@ Pytyut.node_link = Pytyut.auto_node_chose(debug=True)
 zkg = Pytyut('学号', '教务系统的密码')
 zkg.login(debug=True)
 ```
-**V0.9 beta更新！现在可以用一句代码来执行上面的三个步骤！**
+**V0.9 beta更新！现在可以用一句代码来简化执行上面的三个步骤！**
 ```python
 zkg = Pytyut('学号', '教务系统的密码', node_link='auto', login=True, debug=True)
 ```
