@@ -25,15 +25,27 @@ class Pytyut:
     -----END PUBLIC KEY-----
         '''
 
-    def __init__(self, uid, pwd):
+    def __init__(self, uid, pwd, **args):
         """
         初始化用户信息
+        可选参数：bool 是否debug模式, str node_link 节点链接，填入不是链接的其他非空值将自动确认节点。bool login 是否自动登录。
         :param uid: 学号
         :param pwd: 教务系统的密码
         """
         self.uid = uid
         self.__pwd = pwd
         self.session = None   # 初始化session
+        if args:
+            self.debug = False
+            if args.get('debug'):
+                self.debug = True
+            if args.get('node_link'):
+                if 'http' in args['node_link']:
+                    self.node_link = args['node_link']
+                else:
+                    self.node_link = self.auto_node_chose(self.debug)
+            if args.get('login'):
+                self.login(debug=self.debug)
 
     def login(self, debug=False):
         """
