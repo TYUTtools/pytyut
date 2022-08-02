@@ -202,6 +202,9 @@ class Pytyut:
         if '出错' in res.text or '教学管理服务平台(S)' in res.text:
             print('登录失效！')
             return None
+        if '评教未完成' in res.text:
+            print('您评教未完成，不允许查询成绩！')
+            return None
         # 正则匹配学年学期，按照学年学期分开每一个片段
         time_list = re.findall(r'\d{4}-\d{4}学年[\u4e00-\u9fa5]季', res.text)
         score_dict_list = []
@@ -550,6 +553,9 @@ class Pytyut:
         res = self.session.post(req_url, data=data, headers=self.default_headers)
         if '出错' in res.text or '教学管理服务平台(S)' in res.text:
             print('登录失效！')
+            return None
+        if '评教未完成' in res.text:
+            print('您评教未完成，不允许查询成绩！')
             return None
         key_info_list = re.findall('<div class="profile-info-name">([^<]*?)</div>', res.text)
         value_info_list = re.findall('<span>([^<]*?)</span>', res.text)
