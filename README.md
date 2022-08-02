@@ -17,25 +17,29 @@
 > pip install pycryptodome
 
 ### 目前功能概况
-| 组件                                     | 版本        | 描述                |
-|----------------------------------------|-----------|-------------------|
-| Pytyut.node_link                       | 2022/1/2  | 自定义登录节点           |
-| Pytyut.req_headers_add                 | 2022/1/2  | 自定义登录header       |
-| Pytyut.login_pub_key                   | 2022/1/2  | 自定义登录公钥（公钥被更改时使用） |
-| self.login()                           | 2022/1/2  | 教务系统的基础登录功能       |
-| self.get_test_info()                   | 2022/1/2  | 考试安排信息查询          |
-| self.get_class_scores()                | 2022/1/2  | 成绩查询              |
-| self.get_class_schedule()              | 2022/1/2  | 查看自己的课表信息         |
-| self.get_class_schedule_by_bjh()       | 2022/2/8  | 查看任意专业班级的课表       |
-| self.get_major_class_tree()            | 2022/2/8  | 获取所有学院专业班级        |
-| self.get_my_info()                     | 2022/2/10 | 查看个人信息            |
-| self.get_xq_page_list()                | 2022/2/13 | 获取选课科目列表          |
-| self.get_xk_kc_list()                  | 2022/2/13 | 获取科目中可选课程列表       |
-| self.get_chosen_course_list()          | 2022/2/23 | 获取已选择的课程列表        |
-| self.choose_course()                   | 2022/2/23 | 提交选课请求表单          |
-| self.remove_course()                   | 2022/2/23 | 提交退课请求表单          |
-| self.get_total_grades_result()         | 2022/5/12 | 总成绩 绩点 排名查询       |
-| self.session.get() self.session.post() | 2022/1/2  | 自定义请求             |
+| 组件                                     | 版本         | 描述                |
+|----------------------------------------|------------|-------------------|
+| Pytyut.node_link                       | 2022/1/2   | 自定义登录节点           |
+| Pytyut.req_headers_add                 | 2022/1/2   | 自定义登录header       |
+| Pytyut.login_pub_key                   | 2022/1/2   | 自定义登录公钥（公钥被更改时使用） |
+| self.login()                           | 2022/1/2   | 教务系统的基础登录功能       |
+| self.get_test_info()                   | 2022/1/2   | 考试安排信息查询          |
+| self.get_class_scores()                | 2022/1/2   | 成绩查询              |
+| self.get_class_schedule()              | 2022/1/2   | 查看自己的课表信息         |
+| self.get_class_schedule_by_bjh()       | 2022/2/8   | 查看任意专业班级的课表       |
+| self.get_major_class_tree()            | 2022/2/8   | 获取所有学院专业班级        |
+| self.get_my_info()                     | 2022/2/10  | 查看个人信息            |
+| self.get_xq_page_list()                | 2022/2/13  | 获取选课科目列表          |
+| self.get_xk_kc_list()                  | 2022/2/13  | 获取科目中可选课程列表       |
+| self.get_chosen_course_list()          | 2022/2/23  | 获取已选择的课程列表        |
+| self.choose_course()                   | 2022/2/23  | 提交选课请求表单          |
+| self.remove_course()                   | 2022/2/23  | 提交退课请求表单          |
+| self.get_total_grades_result()         | 2022/5/12  | 总成绩 绩点 排名查询       |
+| self.get_jxlh_by_xqh()                 | 2022/8/2   | 通过校区号获取该校区的教学楼号   |
+| self.get_free_classes_info()           | 2022/8/2   | 获取空闲教室的Json信息     |
+| self.get_xiaoqu_classroom_tree()       | 2022/8/2   | 获取所有校区教学楼教室       |
+| self.get_class_schedule_by_classroom() | 2022/8/2   | 根据教室获取教室课表        |
+| self.session.get() self.session.post() | 2022/1/2   | 自定义请求             |
 
 要填的坑：
 - [ ] 学生评教

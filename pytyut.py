@@ -561,3 +561,98 @@ class Pytyut:
         value_info_list = re.findall('<span>([^<]*?)</span>', res.text)
         result_dict = dict(zip(key_info_list, value_info_list))
         return result_dict
+
+    def get_jxlh_by_xqh(self, xqh):
+        """
+        通过校区号获取该校区的教学楼号
+        :param xqh: str 校区号 01 迎西校区 02 虎峪校区 06实验 08 明向校区 09 校外 10 线上
+        :return:
+        """
+        if not self.session:
+            print('未登录')
+            return None
+        data = {
+            'queryJson': '{"xqh":"' + xqh + '"}'
+        }
+        req_url = self.node_link + 'Tschedule/Zhcx/GetJxlhByXqh'
+        res = self.session.post(req_url, data=data, headers=self.default_headers)
+        if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+            print('登录失效！')
+            return None
+        return res.json()
+
+    def get_free_classes_info(self, zc='', xq='', ksjc='', jsjc='', xqh='', jxlh=''):
+        """
+        获取空闲教室的Json信息
+        :param zc: str 周次 "1"
+        :param xq: str 星期 “1”
+        :param ksjc: str 开始节次 “1”
+        :param jsjc: str 结束节次 “1”
+        :param xqh: str 校区号 01 迎西校区 02 虎峪校区 06实验 08 明向校区 09 校外 10 线上
+        :param jxlh: str 教学楼号
+        :return:
+        """
+        if not self.session:
+            print('未登录')
+            return None
+        data = {
+            'sort': 'njdm desc nulls last,xsh,zyh,bjh,xh',
+            'order': 'asc',
+            'conditionJson': '{' + f'"zc":"{zc}","xq":"{xq}","ksjc":"{ksjc}","jsjc":"{jsjc}","xqh":"{xqh}","jxlh":"{jxlh}"' + '}'
+        }
+        req_url = self.node_link + 'Tschedule/Zhcx/GetPageListJson'
+        res = self.session.post(req_url, data=data, headers=self.default_headers)
+        if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+            print('登录失效！')
+            return None
+        return res.json()
+
+    def get_xiaoqu_classroom_tree(self):
+        """
+        获取历届校区教室树的Json信息
+        :return: list 返回历届校区教室树的json信息
+        """
+        if not self.session:
+            print('未登录')
+            return None
+        data = {
+            'xaqh': '',
+            'jxlh': '',
+            'jash': '',
+        }
+        req_url = self.node_link + 'Tschedule/Zhcx/GetXqJxlJasTreeJson'
+        res = self.session.post(req_url, data=data, headers=self.default_headers)
+        if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+            print('登录失效！')
+            return None
+        return res.json()
+
+    def get_class_schedule_by_classroom(self, xnxq, xqh, jxlh, jash):
+        """
+        通过教室信息获取教室课表
+        :param xnxq: str 学年学期
+        :param xqh: srt 校区号 01 迎西校区 02 虎峪校区 06实验 08 明向校区 09 校外 10 线上
+        :param jxlh: str 教学楼号
+        :param jash: str 教室代号，如A203
+        :return:
+        """
+        if not self.session:
+            print('未登录')
+            return None
+        class_data = {
+            'zxjxjhh': xnxq,
+            'xqh': xqh,
+            'jxlh': jxlh,
+            'jash': jash,
+        }
+        data = {
+            'pagination[conditionJson]': str(class_data),
+            'pagination[sort]': 'xqh,jxlh,jasj',
+            'pagination[order]': 'asc',
+        }
+        req_url = self.node_link + 'Tschedule/Zhcx/GetSjjsSjddByJash'
+        res = self.session.post(req_url, data=data, headers=self.default_headers)
+        if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+            print('登录失效！')
+            return None
+        return res.json()
