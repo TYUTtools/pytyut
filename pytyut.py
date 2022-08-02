@@ -3,7 +3,7 @@
 -*- coding : utf-8 -*-
 @Author : Zhaokugua
 @Time : 2022/5/12 23:06
-@Version V0.8 beta
+@Version V1.0 beta
 """
 import requests
 import re
