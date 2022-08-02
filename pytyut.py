@@ -2,7 +2,7 @@
 @FILE_NAME : pytyut
 -*- coding : utf-8 -*-
 @Author : Zhaokugua
-@Time : 2022/5/12 23:06
+@Time : 2022/8/2 12:10
 @Version V1.0 beta
 """
 import requests
