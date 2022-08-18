@@ -295,9 +295,9 @@ class Pytyut:
 
     def get_class_schedule_by_bjh(self, xnxq, bjh):
         """
-        获取历届学院专业班级树的Json信息
+        根据学年学期专业班级获取的课表Json信息
+        :param xnxq: 学年学期，如 2022-2023学年秋季：'2022-2023-1-1'
         :param bjh:班级号，专业班级简称
-        :param xnxq: 学年学期
         :return: dict 返回历届学院专业班级树的json信息
         """
         if not self.session:
