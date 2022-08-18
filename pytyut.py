@@ -62,7 +62,7 @@ class Pytyut:
         self.default_headers.update(self.req_headers_add)
         self.session.get(self.node_link, headers=self.default_headers)
         login_data = {
-            'username': self.__RSA_uid(self.uid),
+            'username': self.__RSA_uid(f"{self.uid}"),
             'password': self.__pwd,
             'code': '',
             'isautologin': 0,
@@ -656,3 +656,40 @@ class Pytyut:
             print('登录失效！')
             return None
         return res.json()
+
+
+# 直接运行文件可以方便调试
+if __name__ == '__main__':
+    import sys, re
+
+    try:
+        from pprint import pprint
+    except Exception:
+        print("没有安装 pprint 规范打印模块，即将使用原始打印！\n如果需要请在命令行执行命令 [pip install -U pprint] ")
+        
+    # 匹配版本号决定运行代码
+    ptn = re.compile('(\d[.]\d+).*')
+    if float(ptn.match(sys.version).groups()[0]) >= 3.10:
+        run = lambda order: exec(f"if (temp:=({order})) is not None:pprint(temp)")
+    else:
+        run = lambda order: exec(f"temp=({order});if temp is not None:pprint(temp)")
+
+    print(f'Python {sys.version} on {sys.platform}')
+    print('Type "help", "copyright", "credits" or "license" for more information.')
+    while True:
+        try:
+            order = input('>>> ')
+            if 'while' in order or 'for' in order or 'def' in order \
+                    or 'class' in order or 'try' in order or 'match' in order:
+                order += '\n'
+                temp = input('... ')
+                temp.replace('\t', '    ')
+                while temp:
+                    order += temp
+                    temp = input('... ')
+            try:
+                run(order)
+            except Exception as _:
+                exec(order)
+        except Exception as error:
+            print(type(error), error, sep='\n    ')
