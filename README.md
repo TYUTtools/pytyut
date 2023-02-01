@@ -24,7 +24,7 @@
 | Pytyut.login_pub_key                   | 2022/1/2   | 自定义登录公钥（公钥被更改时使用） |
 | self.login()                           | 2022/1/2   | 教务系统的基础登录功能       |
 | self.get_test_info()                   | 2022/1/2   | 考试安排信息查询          |
-| self.get_class_scores()                | 2022/1/2   | 成绩查询              |
+| self.get_class_scores()                | 2023/2/1   | 成绩查询              |
 | self.get_class_schedule()              | 2022/1/2   | 查看自己的课表信息         |
 | self.get_class_schedule_by_bjh()       | 2022/2/8   | 查看任意专业班级的课表       |
 | self.get_major_class_tree()            | 2022/2/8   | 获取所有学院专业班级        |
