@@ -2,8 +2,8 @@
 @FILE_NAME : pytyut
 -*- coding : utf-8 -*-
 @Author : Zhaokugua
-@Time : 2022/8/2 12:10
-@Version V1.0 beta
+@Time : 2023/2/1 21:46
+@Version V1.1 beta
 """
 import requests
 import re
@@ -186,7 +186,7 @@ class Pytyut:
             return None
         return res.json()
 
-    def get_class_scores(self):
+    def get_class_scores(self, bydesk=False):
         """
         获取课程成绩
         :return: 返回课程成绩json信息
@@ -194,6 +194,19 @@ class Pytyut:
         if not self.session:
             print('未登录')
             return None
+
+        if bydesk:
+            req_url = self.node_link + '/Home/GetBxqcj'
+            res = self.session.post(req_url, headers=self.default_headers)
+            if '出错' in res.text or '教学管理服务平台(S)' in res.text:
+                print('登录失效！')
+                return None
+            html_text = json.loads(res.text)["rpath"]["m_StringValue"]
+            # html_text = html_text.replace('<font style="color: #ff0000">', '').replace('</font>', '')
+            param = '''<tr><td  height='20%' width='80%' style=\\"vertical-align:middle; \\">([^<]*?)</td><td  height='20%'  width='20%' style=\\"vertical-align:middle; \\">([^<]*?)</td> </tr>'''
+            info_list = re.findall(param, html_text)
+            return info_list
+
         req_data = {
             'order': 'zxjxjhh desc,kch',
         }
@@ -206,7 +219,7 @@ class Pytyut:
             print('您评教未完成，不允许查询成绩！')
             return None
         # 正则匹配学年学期，按照学年学期分开每一个片段
-        time_list = re.findall(r'\d{4}-\d{4}学年[\u4e00-\u9fa5]季', res.text)
+        time_list = re.findall(r'\d{4}-\d{4}学年[\u4e00-\u9fa5]', res.text)
         score_dict_list = []
         for i in range(len(time_list)):
             if i < len(time_list) - 1:
