@@ -103,8 +103,10 @@ class Pytyut:
         自动确认登录节点
         :param debug:是否打印调试信息
         :return:登录节点的链接，如：http://jxgl1.tyut.edu.cn/
+        这个节点之前学生入口1是jxgl1.tyut.edu.cn，学生入口2是jxgl2.tyut.edu.cn
+        但是前几个月不知道怎么的域名不用了变成ip地址了，不知道学校在想什么
         """
-        test_url = 'http://jxgl1.tyut.edu.cn/'
+        test_url = 'http://192.168.200.8/'  # 'http://jxgl2.tyut.edu.cn/'
         print("正在测试最快速的连接，请稍后...")if debug else ''
         try:
             print("节点1...", end='')if debug else ''
@@ -113,7 +115,7 @@ class Pytyut:
         except:
             print('超时')if debug else ''
             print("节点2...", end='')if debug else ''
-            test_url = 'http://jxgl2.tyut.edu.cn/'
+            test_url = 'http://192.168.200.7/'  # 'http://jxgl1.tyut.edu.cn/' # 最近这个节点很多页面会404所以优先级调低一点
             try:
                 req = requests.get(test_url, timeout=3, headers=cls.default_headers)
                 print(req.elapsed.microseconds/1000 + req.elapsed.seconds*100, 'ms')if debug else ''
