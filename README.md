@@ -5,13 +5,11 @@
 
 现在已经有很多基于此开发的实用工具！
 
-[太理全校课程表爬取<br>https://gitee.com/jixiaob/TyutClassScheduleCrawler](https://gitee.com/jixiaob/TyutClassScheduleCrawler)
+[太理全校课程表爬取<br>https://github.com/TYUTtools/TyutClassScheduleCrawler](https://github.com/TYUTtools/TyutClassScheduleCrawler)
 
-[太理教务系统选课脚本<br>https://gitee.com/jixiaob/tyut_class_choose](https://gitee.com/jixiaob/tyut_class_choose)
+[太理教务系统选课脚本<br>https://github.com/TYUTtools/tyut_class_choose](https://github.com/TYUTtools/tyut_class_choose)
 
 [太原理工大学学院专业班级选择前端模板<br>https://gitee.com/jixiaob/tyut_major_class_choose](https://gitee.com/jixiaob/tyut_major_class_choose)
-
-[小苦瓜-基于Django的QQ机器人-太理bot功能插件<br>https://gitee.com/jixiaob/xiaokugua](https://gitee.com/jixiaob/xiaokugua)
 
 
 
