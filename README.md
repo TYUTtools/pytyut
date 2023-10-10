@@ -9,7 +9,7 @@
 
 [太理教务系统选课脚本<br>https://github.com/TYUTtools/tyut_class_choose](https://github.com/TYUTtools/tyut_class_choose)
 
-[太原理工大学学院专业班级选择前端模板<br>https://gitee.com/jixiaob/tyut_major_class_choose](https://gitee.com/jixiaob/tyut_major_class_choose)
+[太原理工大学学院专业班级选择前端模板<br>https://github.com/TYUTtools/tyut_major_class_choose](https://github.com/TYUTtools/tyut_major_class_choose)
 
 
 
